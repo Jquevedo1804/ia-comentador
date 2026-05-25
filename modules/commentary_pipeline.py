@@ -69,6 +69,19 @@ _SINGLE_FRAME_ACTIONS = {
     "knockback near edge",
 }
 _MIN_STABLE_ACTION_SCORE = 0.18
+_LATE_GAME_ACTION_ALIASES = {"final duel 1v1", "victory screen"}
+_MIN_LATE_GAME_ACTION_SCORE = 0.30
+
+_SIGNAL_ES: dict[str, str] = {
+    "combate": "combate visible",
+    "proyectiles": "uso de proyectiles",
+    "loot": "loot o inventario",
+    "movilidad": "rotacion o cruce",
+    "riesgo_vacio": "riesgo de vacio",
+    "curacion": "curacion",
+    "cierre": "posible tramo final",
+    "victoria": "victoria",
+}
 
 
 def _clean_caption(caption: str) -> str:
@@ -167,8 +180,69 @@ def _extract_visual_signals(captions: list[str]) -> list[str]:
     signals: list[str] = []
     for signal_name, keywords in _VISUAL_SIGNALS.items():
         if any(keyword in lower_blob for keyword in keywords):
-            signals.append(signal_name)
+                signals.append(signal_name)
     return signals
+
+
+def _progress_ratio(start_time_s: float, video_duration_s: float) -> float:
+    if video_duration_s <= 0:
+        return 0.0
+    return max(0.0, min(1.0, start_time_s / video_duration_s))
+
+
+def _detect_phase_hint(
+    start_time_s: float,
+    video_duration_s: float,
+    reason: str,
+    captions: list[str],
+) -> str:
+    lower_reason = (reason or "").lower()
+    caption_blob = " ".join(captions).lower()
+    progress = _progress_ratio(start_time_s, video_duration_s)
+
+    if "victory" in caption_blob or "you win" in caption_blob or "win screen" in caption_blob:
+        return "cierre"
+
+    is_near_opening = start_time_s <= 8.0 or progress <= 0.12
+    if ("inicio" in lower_reason and (start_time_s <= 12.0 or progress <= 0.15)) or is_near_opening:
+        return "inicio"
+
+    late_text_signals = ["endgame", "deathmatch", "top 2", "top 3", "last players"]
+    if progress >= 0.55 and any(signal in caption_blob for signal in late_text_signals):
+        return "cierre"
+
+    if progress >= 0.82 and video_duration_s >= 20.0:
+        return "cierre"
+
+    return "medio"
+
+
+def _phase_label_es(phase_hint: str) -> str:
+    if phase_hint == "inicio":
+        return "inicio de partida"
+    if phase_hint == "cierre":
+        return "tramo final"
+    return "juego medio"
+
+
+def _build_context_summary_es(
+    phase_hint: str,
+    progress_pct: int,
+    visual_signals: list[str],
+    trigger_reasons: list[str],
+) -> str:
+    phase_text = f"Fase: {_phase_label_es(phase_hint)} ({progress_pct}% del video)"
+    signal_text = ""
+    if visual_signals:
+        translated = [_SIGNAL_ES.get(signal, signal) for signal in visual_signals]
+        signal_text = f"Senales: {', '.join(translated)}"
+
+    reason_text = ""
+    if trigger_reasons:
+        reason_text = f"Evento: {', '.join(sorted(set(trigger_reasons)))}"
+
+    parts = [part for part in [phase_text, signal_text, reason_text] if part]
+    return ". ".join(parts) + "."
 
 
 def _remove_unreliable_item_claims(text: str) -> str:
@@ -194,14 +268,28 @@ def _remove_unreliable_item_claims(text: str) -> str:
     return " ".join(cleaned.split()).strip(" ,;:.")
 
 
-def _build_sequence_context(captions: list[str], trigger_reasons: list[str], fallback_reason: str) -> str:
+def _build_sequence_context(
+    captions: list[str],
+    trigger_reasons: list[str],
+    fallback_reason: str,
+    phase_hint: str,
+    progress_pct: int,
+    context_summary_es: str,
+) -> str:
+    phase_text = f"Fase temporal: {phase_hint}. Progreso video: {progress_pct}%."
+
     if not captions:
         fallback = _reason_fallback_context(fallback_reason)
         if trigger_reasons:
-            return f"{fallback} Razones detectadas: {', '.join(sorted(set(trigger_reasons)))}."
-        return fallback
+            return (
+                f"{phase_text} Resumen visual: {context_summary_es} {fallback} "
+                f"Razones detectadas: {', '.join(sorted(set(trigger_reasons)))}."
+            )
+        return f"{phase_text} Resumen visual: {context_summary_es} {fallback}"
 
     signals = _extract_visual_signals(captions)
+    if phase_hint != "cierre":
+        signals = [signal for signal in signals if signal not in {"cierre"}]
     compact_captions = " ; ".join(captions[:4])
     signal_text = f"Senales tacticas: {', '.join(signals)}." if signals else ""
     reason_text = (
@@ -209,7 +297,10 @@ def _build_sequence_context(captions: list[str], trigger_reasons: list[str], fal
         if trigger_reasons
         else ""
     )
-    return f"Secuencia de skywars. {compact_captions}. {signal_text} {reason_text}".strip()
+    return (
+        f"Secuencia de skywars. {phase_text} Resumen visual: {context_summary_es} "
+        f"Captions utiles: {compact_captions}. {signal_text} {reason_text}"
+    ).strip()
 
 
 def build_commentary_sequences(
@@ -245,6 +336,11 @@ def build_commentary_sequences(
     # para asegurar narracion continua en videos largos aunque vision falle.
     duration_s = float(analyzed_by_idx[max_idx].get("time_s", 0.0)) - float(
         analyzed_by_idx[min_idx].get("time_s", 0.0)
+    )
+    video_duration_s = max(
+        duration_s,
+        float(analyzed_by_idx[max_idx].get("time_s", 0.0)),
+        0.0,
     )
     auto_target = max(3, min(max_sequences, int(duration_s // 12) + 1))
     desired_count = (
@@ -316,13 +412,33 @@ def build_commentary_sequences(
         end_time_s = float(entries[-1].get("time_s", start_time_s))
         if end_time_s < start_time_s:
             end_time_s = start_time_s
+        key_entry = analyzed_by_idx.get(key_frame_idx, entries[0])
+        key_time_s = float(key_entry.get("time_s", start_time_s))
 
+        visual_signals = _extract_visual_signals(captions)
+        phase_hint = _detect_phase_hint(
+            start_time_s=key_time_s,
+            video_duration_s=video_duration_s,
+            reason=dominant_reason,
+            captions=captions,
+        )
+        if phase_hint != "cierre":
+            visual_signals = [signal for signal in visual_signals if signal != "cierre"]
+        progress_pct = int(round(_progress_ratio(key_time_s, video_duration_s) * 100))
+        context_summary_es = _build_context_summary_es(
+            phase_hint=phase_hint,
+            progress_pct=progress_pct,
+            visual_signals=visual_signals,
+            trigger_reasons=trigger_reasons,
+        )
         context_caption = _build_sequence_context(
             captions=captions,
             trigger_reasons=trigger_reasons,
             fallback_reason=dominant_reason,
+            phase_hint=phase_hint,
+            progress_pct=progress_pct,
+            context_summary_es=context_summary_es,
         )
-        visual_signals = _extract_visual_signals(captions)
 
         sequences.append(
             {
@@ -330,6 +446,7 @@ def build_commentary_sequences(
                 "start_frame_idx": int(entries[0]["frame_idx"]),
                 "end_frame_idx": int(entries[-1]["frame_idx"]),
                 "key_frame_idx": int(key_frame_idx),
+                "key_time_s": key_time_s,
                 "start_time_s": start_time_s,
                 "end_time_s": end_time_s,
                 "captions": captions,
@@ -338,6 +455,9 @@ def build_commentary_sequences(
                 "trigger_count": len(trigger_indices),
                 "has_visual_context": bool(captions),
                 "visual_signals": visual_signals,
+                "phase_hint": phase_hint,
+                "progress_pct": progress_pct,
+                "context_summary_es": context_summary_es,
             }
         )
 
@@ -376,6 +496,7 @@ def enrich_sequences_with_action_tags(
     for sequence in sequences:
         updated = dict(sequence)
         key_idx = int(sequence.get("key_frame_idx", 0))
+        phase_hint = str(sequence.get("phase_hint", "medio"))
         action_tags: list[dict] = []
         try:
             frame_candidates = []
@@ -420,6 +541,9 @@ def enrich_sequences_with_action_tags(
                 boosted_score = 0.65 * avg_score + 0.35 * peak_score_by_alias.get(alias, 0.0)
                 if boosted_score < _MIN_STABLE_ACTION_SCORE:
                     continue
+                if alias in _LATE_GAME_ACTION_ALIASES:
+                    if phase_hint != "cierre" or boosted_score < _MIN_LATE_GAME_ACTION_SCORE:
+                        continue
                 if count_by_alias.get(alias, 0) < 2 and alias not in _SINGLE_FRAME_ACTIONS:
                     continue
                 scored_aliases.append((alias, boosted_score))

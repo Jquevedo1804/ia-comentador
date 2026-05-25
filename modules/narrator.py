@@ -16,6 +16,13 @@ _CATEGORY_KEYWORDS: dict[str, list[str]] = {
         "spawn",
         "starting island",
         "island spawn",
+        "inicio",
+        "apertura",
+        "fase temporal: inicio",
+        "inicio de partida",
+        "primeros segundos",
+        "loot inicial",
+        "preparacion de ruta",
         "jaula",
         "cage",
         "countdown",
@@ -128,6 +135,8 @@ _CATEGORY_KEYWORDS: dict[str, list[str]] = {
     "cierre": [
         "endgame",
         "late game",
+        "fase temporal: cierre",
+        "tramo final",
         "deathmatch",
         "final phase",
         "border closing",
@@ -202,11 +211,11 @@ _PROJECTILE_ITEMS = {"snowballs", "huevos"}
 
 _CONTEXT_KEYWORDS: dict[str, list[str]] = {
     "mid": ["mid", "center", "centro", "middle island", "middle"],
-    "bridge": ["bridge", "bridging", "placing blocks", "speed bridge", "ninja bridge"],
-    "void": ["void", "falling", "fell", "edge", "knocked", "clutch", "mlg water"],
-    "height": ["high ground", "tower", "top", "elevated", "above", "altura"],
-    "pressure": ["rush", "pushing", "chasing", "sprinting", "aggressive"],
-    "defense": ["hiding", "cover", "wall", "holding angle", "camping", "sneak"],
+    "bridge": ["bridge", "bridging", "placing blocks", "speed bridge", "ninja bridge", "puente"],
+    "void": ["void", "vacio", "falling", "fell", "edge", "borde", "filo", "knocked", "clutch", "mlg water"],
+    "height": ["high ground", "tower", "top", "elevated", "above", "altura", "torre"],
+    "pressure": ["rush", "pushing", "chasing", "sprinting", "aggressive", "presion", "persecucion"],
+    "defense": ["hiding", "cover", "wall", "holding angle", "camping", "sneak", "defensiva"],
     "low_health": ["low health", "one heart", "half heart", "critical health", "hearts low"],
 }
 
@@ -216,76 +225,76 @@ _PLAYERS_HINTS: dict[str, list[str]] = {
     "top4": ["top 4", "four players left", "4 players left", "last four"],
 }
 
+_PLAYERS_HINT_TEXT: dict[str, str] = {
+    "top2": "1v1: cada trade puede cerrar la partida.",
+    "top3": "Top 3, rotar mal cuesta partida.",
+    "top4": "Top 4, recursos y posicion pesan mas.",
+}
+
 _TEMPLATES: dict[str, list[str]] = {
     "inicio": [
-        "Arranca Skywars y ya esta trazando su plan inicial.",
-        "Inicio de ronda: primeros segundos clave para marcar el ritmo.",
-        "Se abre la partida y cada decision temprana pesa muchisimo.",
-        "Comienzo limpio, toca decidir entre loot rapido o rush directo.",
+        "Sale de spawn y define la ruta inicial.",
+        "Primeros segundos: loot rapido o rush directo.",
+        "Arranque limpio; necesita velocidad antes del cruce.",
+        "Inicio de ronda, el timing ya empieza a contar.",
     ],
     "loot": [
-        "Loot bien administrado, no regala timing en la salida.",
-        "Gestion de inventario solida para preparar el siguiente choque.",
-        "Buena lectura de cofres, sale mejor equipado para pelear.",
-        "Se equipa con {item} y sube su amenaza de inmediato.",
-        "Recupera recursos clave y optimiza su ventana de combate.",
-        "Microgestion excelente del inventario, esta preparando la siguiente ventana de agresion.",
-        "Loot rapido y ordenado: cada segundo ganado aqui se paga en combate.",
-        "Ajuste fino de recursos, esta construyendo ventaja antes del trade directo.",
+        "Abre cofre y acelera la salida.",
+        "Ordena recursos para pelear sin perder tempo.",
+        "Buen loot; ahora importa salir antes del rival.",
+        "Se equipa con {item} y prepara presion.",
+        "Inventario rapido para entrar mejor al duelo.",
+        "Consigue recursos y busca la siguiente rotacion.",
     ],
     "puenteo": [
-        "Puenteando bajo tension, este cruce define el siguiente duelo.",
-        "Construye paso entre islas con riesgo total al vacio.",
-        "Cruce agresivo: quiere iniciativa antes que el rival.",
-        "Speed bridge en marcha, precision absoluta en cada bloque.",
+        "Cruce expuesto; un golpe puede mandarlo al vacio.",
+        "Puenteo con presion, cada bloque cuenta.",
+        "Se abre camino entre islas buscando iniciativa.",
+        "Rotacion arriesgada sobre vacio.",
     ],
     "centro": [
-        "Toma espacio en mid y eso cambia el control de recursos.",
-        "Ya pisa centro: posicion clave para dominar la partida.",
-        "Rotacion al medio bien medida, busca ventaja de mapa.",
-        "Mid controlado, ahora puede castigar a quien rote tarde.",
+        "Gana espacio en mid y controla rutas.",
+        "Pisa centro para castigar rotaciones tardias.",
+        "Mid le da recursos y angulos de presion.",
+        "Buena rotacion al centro; llega con iniciativa.",
     ],
     "combate": [
-        "Duelo abierto en Skywars, mecanica al limite.",
-        "Intercambio fuerte de golpes, este trade puede romper el mapa.",
-        "PVP intenso, timing y knockback lo son todo aqui.",
-        "Pelea cerrada: cualquier microerror cuesta la vida.",
-        "Presiona con {item} y obliga respuesta inmediata.",
-        "Entrada agresiva al intercambio, quiere cerrar la pelea en esta rotacion.",
-        "Combate de alto ritmo: lectura de rango, click timing y posicion milimetrica.",
-        "Trade muy tecnico, ambos jugadores buscan el primer error del rival.",
-        "Duelo al limite, cada hit cambia por completo la ventaja del enfrentamiento.",
-        "Pelea muy viva en pantalla, esto se decide por mecanica pura.",
+        "Duelo abierto; el primer combo pesa mucho.",
+        "Trade cerrado, el knockback decide.",
+        "Entra al intercambio buscando ventaja.",
+        "Pelea directa; posicion antes que ego.",
+        "Presiona con {item}; busca cortar el avance.",
+        "Choque rapido, no puede regalar rango.",
     ],
     "eliminacion": [
-        "Eliminacion confirmada, ventaja enorme en el cierre.",
-        "Baja importante: limpia espacio y gana control del mapa.",
-        "Convierte la presion en kill, jugada muy eficiente.",
-        "Cae un rival y cambia por completo la lectura del round.",
+        "Baja confirmada; se abre el mapa.",
+        "Convierte la presion en eliminacion.",
+        "El rival cae y cambia el cierre.",
+        "Kill importante; gana espacio inmediato.",
     ],
     "peligro_vacio": [
-        "Momento critico al borde del vacio, no hay margen de error.",
-        "Situacion de alto riesgo: un toque define todo.",
-        "Se juega la partida en el filo del mapa.",
-        "Knockback peligroso, sobrevivir aqui ya es ganancia.",
+        "Al borde del vacio; un hit decide.",
+        "Zona peligrosa, no puede regalar knockback.",
+        "Se juega la vida en el borde.",
+        "Momento delicado sobre vacio.",
     ],
     "cierre": [
-        "Entramos al endgame y cada decision vale oro.",
-        "Cierre encendido: posicion y paciencia mandan.",
-        "Tramo final, los microdetalles ahora deciden ganador.",
-        "Late game total, la presion esta al maximo.",
+        "Tramo final; cada rotacion vale oro.",
+        "Endgame tenso, posicion antes que ego.",
+        "Final cerrado; paciencia y altura deciden.",
+        "Quedan pocos, no puede regalar espacio.",
     ],
     "victoria": [
-        "Victoria asegurada con una ejecucion muy limpia.",
+        "Victoria cerrada con buena lectura.",
         "Se lleva el Skywars con autoridad.",
-        "Win confirmado: buena lectura, buena mecanica y control mental.",
-        "Cierra la partida de forma contundente.",
+        "Win confirmado; ejecucion limpia.",
+        "Cierra la partida sin dar opciones.",
     ],
     "general": [
-        "Skywars muy tenso, cualquier jugada puede cambiar todo.",
-        "La partida sigue abierta y el siguiente movimiento es clave.",
-        "Ritmo alto en el mapa, no hay espacio para errores.",
-        "Momento de maxima concentracion en esta ronda.",
+        "Ronda abierta; toca leer la siguiente rotacion.",
+        "Momento de pausa, pero el mapa sigue vivo.",
+        "Busca informacion antes de comprometerse.",
+        "Se mantiene activo, esperando ventana clara.",
     ],
     "fallback_error": [
         "Escena confusa, pero la partida sigue intensa y abierta.",
@@ -293,6 +302,142 @@ _TEMPLATES: dict[str, list[str]] = {
         "Frame ambiguo, seguimos leyendo la siguiente accion clave.",
     ],
 }
+
+_ACTION_TEMPLATES: list[tuple[str, list[str]]] = [
+    (
+        "pantalla de victoria",
+        [
+            "Pantalla de victoria; la ronda queda cerrada.",
+            "Win en pantalla, cierre limpio.",
+        ],
+    ),
+    (
+        "caida al vacio",
+        [
+            "Caida al vacio; castigo total al posicionamiento.",
+            "Se va al vacio y la pelea cambia al instante.",
+        ],
+    ),
+    (
+        "knockback cerca del borde",
+        [
+            "Knockback cerca del borde; un hit mas decide.",
+            "Lo empuja al filo y fuerza panico defensivo.",
+        ],
+    ),
+    (
+        "riesgo al borde del vacio",
+        [
+            "Esta al borde; no puede aceptar otro trade.",
+            "Zona de vacio, cualquier golpe lo sentencia.",
+        ],
+    ),
+    (
+        "puenteo sobre vacio",
+        [
+            "Puenteo sobre vacio; cruce muy castigable.",
+            "Cruza expuesto, necesita terminar rapido.",
+        ],
+    ),
+    (
+        "persecucion en puente",
+        [
+            "Persecucion en puente; el knockback manda.",
+            "Lo corre en linea recta, buscando el golpe final.",
+        ],
+    ),
+    (
+        "busca altura con torre",
+        [
+            "Sube por altura y obliga al rival a mirar arriba.",
+            "Toma verticalidad para pelear con ventaja.",
+        ],
+    ),
+    (
+        "duelo final 1v1",
+        [
+            "1v1 final; aqui no hay margen.",
+            "Duelo final, cada hit vale partida.",
+        ],
+    ),
+    (
+        "curacion con manzana dorada",
+        [
+            "Se cura antes de reentrar al trade.",
+            "Manzana dorada para comprar segundos clave.",
+        ],
+    ),
+    (
+        "curacion con pocion",
+        [
+            "Pocion usada para reiniciar la pelea.",
+            "Recupera vida y busca volver con tempo.",
+        ],
+    ),
+    (
+        "presion con huevos",
+        [
+            "Huevos para cortar avance y buscar knockback.",
+            "Tira huevos para romper el timing rival.",
+        ],
+    ),
+    (
+        "presion con snowballs",
+        [
+            "Snowballs para frenar entrada y abrir combo.",
+            "Presiona con snowballs, buscando descolocar.",
+        ],
+    ),
+    (
+        "loot de cofre",
+        [
+            "Cofre rapido; quiere salir antes del rush.",
+            "Loot directo, sin regalar segundos.",
+        ],
+    ),
+    (
+        "gestion de inventario",
+        [
+            "Ajusta inventario para entrar mas limpio.",
+            "Ordena la hotbar antes del siguiente choque.",
+        ],
+    ),
+    (
+        "cambio rapido de equipo",
+        [
+            "Cambia equipo rapido y prepara reentrada.",
+            "Swap veloz; busca llegar mejor al duelo.",
+        ],
+    ),
+    (
+        "rotacion entre islas",
+        [
+            "Rota entre islas buscando mejor angulo.",
+            "Cambia de isla para no quedar encerrado.",
+        ],
+    ),
+    (
+        "posicion defensiva",
+        [
+            "Se cubre y fuerza al rival a iniciar.",
+            "Defiende posicion, esperando error rival.",
+        ],
+    ),
+    (
+        "duelo melee",
+        [
+            "Melee directo; el rango decide el trade.",
+            "Entra al cuerpo a cuerpo buscando combo.",
+        ],
+    ),
+    (
+        "intercambio corto",
+        [
+            "Trade corto; cada golpe mueve la ventaja.",
+            "Intercambio rapido, no hay espacio gratis.",
+        ],
+    ),
+]
 
 CATEGORY_EMOJI: dict[str, str] = {
     "inicio": "🚀",
@@ -308,12 +453,16 @@ CATEGORY_EMOJI: dict[str, str] = {
 }
 
 _PRIORITY_CATEGORIES = ["victoria", "eliminacion", "peligro_vacio"]
-_MAX_COMMENT_WORDS = 30
+_MAX_COMMENT_WORDS = 22
 
 
 @dataclass
 class SceneContext:
     item: str = "su equipo"
+    action_tags: tuple[str, ...] = ()
+    visual_signals: tuple[str, ...] = ()
+    phase_hint: str = "medio"
+    progress_pct: int = 0
     is_ranged: bool = False
     in_mid: bool = False
     bridging: bool = False
@@ -335,6 +484,7 @@ class NarratorModel:
         self._last_category = "general"
         self._last_comment = ""
         self._category_streak = 0
+        self.max_comment_words = _MAX_COMMENT_WORDS
 
     def _normalize(self, text: str) -> str:
         normalized = unicodedata.normalize("NFKD", text or "")
@@ -369,18 +519,63 @@ class NarratorModel:
 
     def _extract_players_hint(self, lower: str) -> str:
         if any(self._contains(lower, token) for token in _PLAYERS_HINTS["top2"]):
-            return "Quedan muy pocos jugadores, cualquier trade define todo."
+            return _PLAYERS_HINT_TEXT["top2"]
         if any(self._contains(lower, token) for token in _PLAYERS_HINTS["top3"]):
-            return "Estamos en top 3, cada rotacion tiene impacto directo."
+            return _PLAYERS_HINT_TEXT["top3"]
         if any(self._contains(lower, token) for token in _PLAYERS_HINTS["top4"]):
-            return "Entrando al tramo final, posicion y recursos son vitales."
+            return _PLAYERS_HINT_TEXT["top4"]
         return ""
+
+    def _extract_marker_values(self, lower: str, marker: str) -> tuple[str, ...]:
+        match = re.search(rf"{re.escape(marker)}\s*:\s*([^.]*)", lower)
+        if not match:
+            return ()
+        values = []
+        for value in match.group(1).split(","):
+            clean = value.strip(" ;")
+            if clean:
+                values.append(clean)
+        return tuple(values)
+
+    def _extract_action_tags(self, lower: str) -> tuple[str, ...]:
+        tags = list(self._extract_marker_values(lower, "lectura en espanol"))
+        for phrase, _ in _ACTION_TEMPLATES:
+            if phrase in lower and phrase not in tags:
+                tags.append(phrase)
+        return tuple(tags)
+
+    def _extract_visual_signals(self, lower: str) -> tuple[str, ...]:
+        return self._extract_marker_values(lower, "senales tacticas")
+
+    def _extract_phase_hint(self, lower: str) -> str:
+        match = re.search(r"fase temporal\s*:\s*(inicio|medio|cierre)", lower)
+        if match:
+            return match.group(1)
+        if "inicio de partida" in lower or "primeros segundos" in lower:
+            return "inicio"
+        if "tramo final" in lower or "endgame" in lower:
+            return "cierre"
+        return "medio"
+
+    def _extract_progress_pct(self, lower: str) -> int:
+        match = re.search(r"progreso video\s*:\s*(\d+)", lower)
+        if not match:
+            return 0
+        return max(0, min(100, int(match.group(1))))
 
     def _extract_context(self, caption: str) -> SceneContext:
         lower = self._normalize(caption)
         item = self._extract_item(caption)
+        action_tags = self._extract_action_tags(lower)
+        visual_signals = self._extract_visual_signals(lower)
+        phase_hint = self._extract_phase_hint(lower)
+        progress_pct = self._extract_progress_pct(lower)
         return SceneContext(
             item=item,
+            action_tags=action_tags,
+            visual_signals=visual_signals,
+            phase_hint=phase_hint,
+            progress_pct=progress_pct,
             is_ranged=item in _PROJECTILE_ITEMS,
             in_mid=any(self._contains(lower, k) for k in _CONTEXT_KEYWORDS["mid"]),
             bridging=any(self._contains(lower, k) for k in _CONTEXT_KEYWORDS["bridge"]),
@@ -417,6 +612,32 @@ class NarratorModel:
         if context.item != "su equipo":
             scores["loot"] = scores.get("loot", 0) + 1
 
+        action_blob = " ".join(context.action_tags)
+        if context.phase_hint == "inicio":
+            scores["inicio"] = scores.get("inicio", 0) + 28
+            if "victoria" not in scores:
+                scores.pop("cierre", None)
+        elif context.phase_hint == "medio":
+            if "victoria" not in scores:
+                scores.pop("cierre", None)
+        elif context.phase_hint == "cierre":
+            scores["cierre"] = scores.get("cierre", 0) + 6
+
+        if any(token in action_blob for token in ["pantalla de victoria"]):
+            scores["victoria"] = scores.get("victoria", 0) + 30
+        if any(token in action_blob for token in ["caida al vacio", "knockback cerca del borde", "riesgo al borde del vacio"]):
+            scores["peligro_vacio"] = scores.get("peligro_vacio", 0) + 12
+        if any(token in action_blob for token in ["duelo melee", "intercambio corto", "presion con huevos", "presion con snowballs"]):
+            scores["combate"] = scores.get("combate", 0) + 10
+        if any(token in action_blob for token in ["puenteo sobre vacio", "persecucion en puente"]):
+            scores["puenteo"] = scores.get("puenteo", 0) + 10
+        if any(token in action_blob for token in ["loot de cofre", "gestion de inventario", "cambio rapido de equipo"]):
+            scores["loot"] = scores.get("loot", 0) + 8
+        if "rotacion entre islas" in action_blob:
+            scores["centro"] = scores.get("centro", 0) + 5
+        if "duelo final 1v1" in action_blob and context.phase_hint == "cierre":
+            scores["cierre"] = scores.get("cierre", 0) + 12
+
         # Si hay victoria o kill explicita, forzar alta prioridad.
         for category in _PRIORITY_CATEGORIES:
             if any(self._contains(lower, kw) for kw in _CATEGORY_KEYWORDS[category]):
@@ -430,7 +651,7 @@ class NarratorModel:
             scores["combate"] = scores.get("combate", 0) + 4
 
         # Si hay "last players" sin kill/victoria, reforzar cierre.
-        if context.players_hint and "victoria" not in scores:
+        if context.players_hint and context.phase_hint == "cierre" and "victoria" not in scores:
             scores["cierre"] = scores.get("cierre", 0) + 3
 
         return scores
@@ -442,6 +663,9 @@ class NarratorModel:
         scores = self._score_categories(caption, context)
         if not scores:
             return "general"
+
+        if context.phase_hint == "inicio" and "victoria" not in scores:
+            return "inicio"
 
         sorted_candidates = sorted(scores.items(), key=lambda item: item[1], reverse=True)
         best_category, best_score = sorted_candidates[0]
@@ -473,78 +697,138 @@ class NarratorModel:
             self._used_recently = self._used_recently[-self._max_memory :]
         return chosen
 
+    def _pick_from_options(self, options: list[str]) -> str:
+        available = [option for option in options if option not in self._used_recently]
+        if not available:
+            available = options
+        chosen = random.choice(available)
+        self._used_recently.append(chosen)
+        if len(self._used_recently) > self._max_memory:
+            self._used_recently = self._used_recently[-self._max_memory :]
+        return chosen
+
+    def _build_specific_comment(self, category: str, ctx: SceneContext) -> str:
+        action_blob = " ".join(ctx.action_tags)
+
+        if ctx.void_risk and any(item in action_blob for item in ["presion con huevos", "presion con snowballs"]):
+            return self._pick_from_options(
+                [
+                    "Proyectil al borde; busca knockback inmediato.",
+                    "Presiona al filo para forzar caida.",
+                ]
+            )
+
+        if ctx.phase_hint == "cierre" and "duelo final 1v1" in action_blob and any(
+            item in action_blob for item in ["duelo melee", "intercambio corto"]
+        ):
+            return self._pick_from_options(
+                [
+                    "1v1 final; cada hit vale partida.",
+                    "Ultimo duelo, no puede fallar el trade.",
+                ]
+            )
+
+        for action_name, options in _ACTION_TEMPLATES:
+            if action_name in {"duelo final 1v1", "pantalla de victoria"} and ctx.phase_hint != "cierre":
+                continue
+            if action_name in action_blob:
+                return self._pick_from_options(options)
+
+        if category == "centro" and "movilidad" in ctx.visual_signals:
+            return self._pick_from_options(
+                [
+                    "Rota para ganar angulo antes del choque.",
+                    "Busca nueva ruta sin quedarse encerrado.",
+                ]
+            )
+        if category == "combate" and "combate" in ctx.visual_signals:
+            return self._pick_from_options(
+                [
+                    "Pelea activa; necesita mantener posicion.",
+                    "Se arma el trade, el spacing importa.",
+                ]
+            )
+        if category == "puenteo" and "riesgo_vacio" in ctx.visual_signals:
+            return self._pick_from_options(
+                [
+                    "Cruce peligroso, cualquier hit castiga.",
+                    "Esta expuesto sobre vacio.",
+                ]
+            )
+        return ""
+
     def _build_detail_line(self, category: str, ctx: SceneContext) -> str:
         options: list[str] = []
 
         if category == "loot":
             if ctx.item != "su equipo":
-                options.append(f"Item detectado: {ctx.item}.")
+                options.append(f"Item clave: {ctx.item}.")
             if ctx.in_mid:
-                options.append("Con esa ruta puede disputar centro de inmediato.")
+                options.append("Puede disputar centro rapido.")
             if ctx.low_health:
-                options.append("Necesita estabilizar vida antes del siguiente choque.")
+                options.append("Necesita curarse antes del choque.")
         elif category == "puenteo":
             if ctx.void_risk:
-                options.append("Un paso mal en puente y se va al vacio.")
+                options.append("Un paso mal y cae.")
             if ctx.is_pressuring:
-                options.append("Cruza con ritmo alto para tomar iniciativa.")
+                options.append("Cruza para tomar iniciativa.")
             if ctx.players_hint:
                 options.append(ctx.players_hint)
         elif category == "centro":
             if ctx.has_height:
-                options.append("La altura en mid le da ventaja de intercambio.")
+                options.append("La altura le favorece.")
             if ctx.is_defensive:
-                options.append("Se cubre bien para no regalar dano gratuito.")
+                options.append("No regala dano gratis.")
             if ctx.players_hint:
                 options.append(ctx.players_hint)
         elif category == "combate":
             if ctx.item != "su equipo":
                 if "manzana" in ctx.item:
-                    options.append("Usa curacion en pleno trade para no perder el tempo del duelo.")
+                    options.append("Se cura antes de reentrar.")
                 elif "pocion" in ctx.item:
-                    options.append("Activa recurso de curacion y busca reentrar con ventaja de vida.")
+                    options.append("Reentra con mas vida.")
                 elif "snowballs" in ctx.item or "huevos" in ctx.item:
-                    options.append(f"Presiona con {ctx.item} para forzar knockback y abrir eliminacion.")
+                    options.append(f"Presiona con {ctx.item} para buscar knockback.")
                     options.append(f"Usa {ctx.item} para cortar el avance rival.")
                 elif not ctx.is_ranged:
                     options.append(f"Juega melee con {ctx.item} buscando knockback.")
             if ctx.void_risk:
-                options.append("El borde del vacio vuelve esta pelea mucho mas peligrosa.")
+                options.append("El borde vuelve peligroso el trade.")
             if ctx.low_health:
-                options.append("Con vida baja, cualquier hit puede cerrar el duelo.")
+                options.append("Vida baja; un hit decide.")
             if ctx.has_height:
-                options.append("La altura puede decidir este intercambio.")
+                options.append("La altura pesa en el trade.")
         elif category == "eliminacion":
             if ctx.void_risk:
-                options.append("La baja en zona de vacio abre totalmente el mapa.")
+                options.append("La baja abre el mapa.")
             if ctx.in_mid:
-                options.append("Eliminar en centro da control y recursos al instante.")
+                options.append("Kill en mid, control inmediato.")
             if ctx.players_hint:
                 options.append(ctx.players_hint)
         elif category == "peligro_vacio":
             if ctx.bridging:
-                options.append("La exposicion en puente sube muchisimo el riesgo.")
+                options.append("El puente lo deja vendido.")
             if ctx.low_health:
-                options.append("Llega tocado y necesita una jugada defensiva perfecta.")
+                options.append("Tocado, necesita defender perfecto.")
             if ctx.players_hint:
                 options.append(ctx.players_hint)
         elif category == "cierre":
             if ctx.has_height:
-                options.append("La altura en endgame suele definir ganador.")
+                options.append("La altura puede decidir.")
             if ctx.in_mid:
-                options.append("Controlar centro en cierre vale media partida.")
+                options.append("Centro vale media partida.")
             if ctx.players_hint:
                 options.append(ctx.players_hint)
         elif category == "victoria":
             if ctx.item != "su equipo":
                 options.append(f"Cierra con gran uso de {ctx.item}.")
             if ctx.players_hint:
-                options.append("Lo consigue en el tramo mas tenso de la ronda.")
+                options.append("Lo logra en el tramo mas tenso.")
         elif category == "general":
             if ctx.players_hint:
                 options.append(ctx.players_hint)
             if ctx.low_health:
-                options.append("Escenario delicado por la vida baja.")
+                options.append("Vida baja, toca jugar fino.")
 
         return random.choice(options) if options else ""
 
@@ -556,16 +840,16 @@ class NarratorModel:
 
         if self._last_category != category:
             if category == "combate" and self._last_category in {"loot", "puenteo", "centro"}:
-                return " Se transforma posicion en pelea inmediata."
+                return " Entra pelea inmediata."
             if category == "eliminacion":
-                return " Conversion limpia de presion a resultado."
+                return " Presion convertida."
             if category == "cierre":
-                return " Entramos en fase decisiva del match."
+                return " Fase decisiva."
             if category == "victoria":
-                return " Cierre total de partida."
+                return " Partida cerrada."
 
         if self._category_streak >= 3 and category in {"combate", "peligro_vacio"}:
-            return " La tension se mantiene al maximo."
+            return " Sigue el peligro."
         return ""
 
     def _finalize_comment(self, base_comment: str, detail_line: str, transition: str) -> str:
@@ -583,9 +867,10 @@ class NarratorModel:
     def _compact_comment(self, text: str) -> str:
         clean = re.sub(r"\s+", " ", text.strip())
         words = clean.split()
-        if len(words) <= _MAX_COMMENT_WORDS:
+        max_words = max(8, min(40, int(self.max_comment_words)))
+        if len(words) <= max_words:
             return clean
-        trimmed = " ".join(words[:_MAX_COMMENT_WORDS]).rstrip(",;:")
+        trimmed = " ".join(words[:max_words]).rstrip(",;:")
         if not trimmed.endswith((".", "!", "?")):
             trimmed += "."
         return trimmed
@@ -598,10 +883,16 @@ class NarratorModel:
             return template, "general"
 
         category = self._classify_scene(caption, context)
-        template = self._pick_template(category, allow_item_template=context.item != "su equipo")
-        base_comment = template.format(item=context.item)
-        detail_line = self._build_detail_line(category, context)
-        transition = self._transition_line(category)
+        specific_comment = self._build_specific_comment(category, context)
+        if specific_comment:
+            base_comment = specific_comment
+            detail_line = ""
+            transition = ""
+        else:
+            template = self._pick_template(category, allow_item_template=context.item != "su equipo")
+            base_comment = template.format(item=context.item)
+            detail_line = self._build_detail_line(category, context)
+            transition = self._transition_line(category)
         comment = self._finalize_comment(base_comment, detail_line, transition)
         self._last_category = category
         return comment, category

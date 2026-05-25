@@ -131,6 +131,13 @@ speaking_rate = st.sidebar.slider(
     value=1.32,
     step=0.02,
 )
+max_comment_words = st.sidebar.slider(
+    "Palabras maximas por comentario",
+    min_value=10,
+    max_value=32,
+    value=18,
+    step=1,
+)
 
 st.sidebar.divider()
 st.sidebar.subheader("Mezcla de Audio")
@@ -212,6 +219,7 @@ if st.button("Analizar y Renderizar Video Narrado", type="primary"):
                 min_score=action_score_threshold,
                 window_radius=action_window_radius,
             )
+            narrator_model.max_comment_words = max_comment_words
             narrated_sequences = narrate_sequences(sequences, narrator_model)
 
         with st.spinner("Sintetizando voces y timeline de comentarios..."):
@@ -256,7 +264,9 @@ if st.button("Analizar y Renderizar Video Narrado", type="primary"):
                 category = item.get("category", "general")
                 emoji = CATEGORY_EMOJI.get(category, "🎮")
                 key_frame_idx = int(item.get("key_frame_idx", 0))
-                preview_caption = " | ".join(item.get("captions", [])[:3]).strip()
+                preview_caption = str(item.get("context_summary_es", "")).strip()
+                if not preview_caption:
+                    preview_caption = " | ".join(item.get("captions", [])[:3]).strip()
                 if not preview_caption:
                     preview_caption = item.get("context_caption", "sin contexto")
 
