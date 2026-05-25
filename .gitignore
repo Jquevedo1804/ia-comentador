@@ -1,0 +1,58 @@
+# Python cache and bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments and local Python tooling
+.venv/
+venv/
+env/
+ENV/
+.env
+.env.*
+!.env.example
+.python-version
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Streamlit local state
+.streamlit/secrets.toml
+
+# Generated media and render outputs
+temp_video.mp4
+outputs/audio/
+outputs/audio_timeline/
+outputs/final/
+*.wav
+*.mp3
+*.mp4
+*.mov
+*.mkv
+*.avi
+*.webm
+
+# Model and ML caches if created inside the repo
+.cache/
+models/
+checkpoints/
+*.safetensors
+*.pt
+*.pth
+*.onnx
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+tmp/
+temp/
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
